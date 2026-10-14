@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mabel Store - Boutique de moda contemporânea e minimalista. Peças selecionadas para quem transforma simplicidade em elegância." />
+  <title>Mabel Store | Moda Contemporânea & Peças Selecionadas</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Serif editorial) & Plus Jakarta Sans (Sans moderna) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Folha de Estilos Principal -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. BARRA DE ANÚNCIO SUPERIOR
+       ========================================================================= -->
+  <div class="announcement-bar" role="region" aria-label="Aviso da Loja">
+    <span>Descobre a tua próxima peça favorita | Bem-vinda à Mabel Store</span>
+  </div>
+
+  <!-- =========================================================================
+       2. CABEÇALHO PRINCIPAL
+       ========================================================================= -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      
+      <!-- Botão Hambúrguer Mobile -->
+      <button 
+        type="button" 
+        class="mobile-nav-toggle" 
+        id="mobile-nav-toggle" 
+        aria-label="Abrir menu de navegação"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Logótipo Textual -->
+      <a href="#" class="logo" aria-label="Mabel Store Página Inicial">
+        MABEL STORE
+        <span>LISBOA</span>
+      </a>
+
+      <!-- Navegação Desktop -->
+      <nav class="nav-desktop" aria-label="Navegação principal">
+        <a href="#inicio" class="nav-link active">Início</a>
+        <a href="#produtos" class="nav-link" onclick="limparTodosOsFiltros();">Catálogo</a>
+        <a href="#produtos" class="nav-link" onclick="appState.filters.category='Novidades'; renderizarProdutos();">Novidades</a>
+        <a href="#produtos" class="nav-link" onclick="appState.filters.gender='Mulher'; renderizarProdutos();">Mulher</a>
+        <a href="#produtos" class="nav-link" onclick="appState.filters.gender='Homem'; renderizarProdutos();">Homem</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </nav>
+
+      <!-- Ações do Cabeçalho: Pesquisa, Favoritos, Carrinho -->
+      <div class="header-actions">
+        <!-- Focar Pesquisa -->
+        <a 
+          href="#produtos" 
+          class="action-btn" 
+          aria-label="Ir para a pesquisa de produtos"
+          onclick="setTimeout(() => DOM.searchInput?.focus(), 300);"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </a>
+
+        <!-- Botão Favoritos com Contador -->
+        <button 
+          type="button" 
+          class="action-btn" 
+          id="open-fav-btn" 
+          aria-label="Ver produtos favoritos"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <span class="badge-count" id="fav-count-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Botão Carrinho com Contador Dinâmico -->
+        <button 
+          type="button" 
+          class="action-btn" 
+          id="open-cart-btn" 
+          aria-label="Abrir carrinho de compras"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-2z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="badge-count" id="cart-count-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Drawer Mobile -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Menu móvel">
+      <ul class="mobile-nav-list">
+        <li><a href="#inicio" class="mobile-nav-link">Início</a></li>
+        <li><a href="#produtos" class="mobile-nav-link" onclick="limparTodosOsFiltros();">Catálogo Completo</a></li>
+        <li><a href="#produtos" class="mobile-nav-link" onclick="appState.filters.category='Novidades'; renderizarProdutos();">Novidades <span>Coleção Nova</span></a></li>
+        <li><a href="#produtos" class="mobile-nav-link" onclick="appState.filters.gender='Mulher'; renderizarProdutos();">Mulher</a></li>
+        <li><a href="#produtos" class="mobile-nav-link" onclick="appState.filters.gender='Homem'; renderizarProdutos();">Homem</a></li>
+        <li><a href="#contacto" class="mobile-nav-link">Contacto & Apoio</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- =======================================================================
+         3. HERO SECTION (EDITORIAL BOUTIQUE)
+         ======================================================================= -->
+    <section class="hero-section" id="inicio">
+      <div class="container">
+        <div class="hero-grid">
+          
+          <div class="hero-content">
+            <span class="hero-tag">Coleção Cápsula 2026 / 2027</span>
+            <h1 class="hero-title">
+              O teu estilo.<br />
+              <em>A tua identidade.</em>
+            </h1>
+            <p class="hero-subtitle">
+              Peças selecionadas para quem transforma simplicidade em elegância. Alfaiataria contemporânea, tecidos nobres e um caimento pensado ao pormenor.
+            </p>
+            <div class="hero-actions">
+              <a href="#produtos" class="btn-primary">
+                Explorar coleção
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href="#categorias" class="btn-secondary">
+                Ver Categorias
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-image-wrapper">
+            <img 
+              src="images/hero.jpg" 
+              alt="Modelo da Mabel Store vestindo alfaiataria em tons marfim e bege quente" 
+              width="800" 
+              height="1000"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80'"
+            />
+            <div class="hero-badge-floating">
+              <p>Edição Limitada</p>
+              <span>Linho e Lã Natural</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. SECÇÃO DE CATEGORIAS VISUAIS
+         ======================================================================= -->
+    <section class="categories-section" id="categorias">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Coleções Selecionadas</span>
+          <h2 class="section-title">Navega por Categorias</h2>
+          <p class="section-subtitle">Escolhe a linha que melhor define o teu momento.</p>
+        </div>
+
+        <div class="categories-grid">
+          <!-- Card Mulher -->
+          <div class="category-card" data-target-gender="Mulher" role="button" tabindex="0" aria-label="Filtrar por Mulher">
+            <img 
+              src="images/cat-mulher.jpg" 
+              alt="Coleção de Mulher" 
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="category-overlay">
+              <h3>Mulher</h3>
+              <span>Explorar Peças &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Card Homem -->
+          <div class="category-card" data-target-gender="Homem" role="button" tabindex="0" aria-label="Filtrar por Homem">
+            <img 
+              src="images/cat-homem.jpg" 
+              alt="Coleção de Homem" 
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="category-overlay">
+              <h3>Homem</h3>
+              <span>Explorar Peças &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Card Novidades -->
+          <div class="category-card" data-target-category="Novidades" role="button" tabindex="0" aria-label="Filtrar por Novidades">
+            <img 
+              src="images/cat-novidades.jpg" 
+              alt="Novidades da estação" 
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="category-overlay">
+              <h3>Novidades</h3>
+              <span>Ver Lançamentos &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Card Mais Vendidos -->
+          <div class="category-card" data-target-category="Mais vendidos" role="button" tabindex="0" aria-label="Filtrar por Mais Vendidos">
+            <img 
+              src="images/cat-bestsellers.jpg" 
+              alt="Peças mais vendidas" 
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="category-overlay">
+              <h3>Mais Vendidos</h3>
+              <span>Ícones da Marca &rarr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         5. CATÁLOGO DE PRODUTOS & FILTROS FUNCIONAIS
+         ======================================================================= -->
+    <section class="products-section" id="produtos">
+      <div class="container">
+        
+        <div class="section-header">
+          <span class="section-tag">Coleção Mabel Store</span>
+          <h2 class="section-title">O Catálogo</h2>
+          <p class="section-subtitle">Peças atemporais criadas com foco na qualidade, conforto e sofisticação.</p>
+        </div>
+
+        <!-- Barra de Controlo: Pesquisa, Filtros e Ordenação -->
+        <div class="catalog-controls">
+          
+          <div class="controls-top-row">
+            <!-- Campo de Pesquisa em Tempo Real -->
+            <div class="search-wrapper">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="Pesquisar por nome, tecido ou categoria..." 
+                aria-label="Pesquisar catálogo"
+              />
+              <button type="button" class="search-clear-btn" id="search-clear-btn" aria-label="Limpar pesquisa">&times;</button>
+            </div>
+
+            <!-- Seletor de Ordenação -->
+            <div class="sort-wrapper">
+              <label for="sort-select" class="sort-label">Ordenar:</label>
+              <select id="sort-select" class="sort-select" aria-label="Ordenar produtos">
+                <option value="default">Destaques</option>
+                <option value="price-asc">Preço: Menor ao Maior</option>
+                <option value="price-desc">Preço: Maior ao Menor</option>
+                <option value="name-asc">Nome: A - Z</option>
+                <option value="newest">Lançamentos Recentes</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filtros Rápidos (Categorias e Género) -->
+          <div class="filter-tabs-wrapper">
+            <div class="category-pills" role="tablist" aria-label="Filtro por categoria">
+              <button type="button" class="filter-pill active" data-category="Todos">Todas as Peças</button>
+              <button type="button" class="filter-pill" data-category="Camisas">Camisas</button>
+              <button type="button" class="filter-pill" data-category="Vestidos">Vestidos</button>
+              <button type="button" class="filter-pill" data-category="Casacos">Casacos</button>
+              <button type="button" class="filter-pill" data-category="Calças">Calças</button>
+              <button type="button" class="filter-pill" data-category="Conjuntos">Conjuntos</button>
+              <button type="button" class="filter-pill" data-category="T-shirts">T-shirts</button>
+              <button type="button" class="filter-pill" data-category="Novidades">Novidades</button>
+              <button type="button" class="filter-pill" data-category="Mais vendidos">Mais Vendidos</button>
+            </div>
+
+            <div class="gender-filters" role="group" aria-label="Filtro por género">
+              <button type="button" class="gender-btn active" data-gender="Todos">Todos</button>
+              <button type="button" class="gender-btn" data-gender="Mulher">Mulher</button>
+              <button type="button" class="gender-btn" data-gender="Homem">Homem</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Resumo dos Resultados e Chips Ativos -->
+        <div class="results-summary">
+          <span id="results-count">A carregar peças...</span>
+          <div class="active-filter-chips" id="active-filters-chips"></div>
+        </div>
+
+        <!-- Grelha de Produtos (Renderizada pelo JavaScript) -->
+        <div class="products-grid" id="products-grid" aria-live="polite">
+          <!-- Os cartões de produtos serão injetados dinamicamente via script.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         6. SECÇÃO DE VALORES E EXPERIÊNCIA DA BOUTIQUE
+         ======================================================================= -->
+    <section class="values-section" aria-label="Valores da Boutique">
+      <div class="container">
+        <div class="values-grid">
+          
+          <div class="value-item">
+            <div class="value-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h4>Qualidade Certificada</h4>
+            <p>Tecidos naturais nobres como linho europeu, algodão Pima e seda amoreira.</p>
+          </div>
+
+          <div class="value-item">
+            <div class="value-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+            </div>
+            <h4>Envio em 24/48 Horas</h4>
+            <p>Portes gratuitos em todas as encomendas superiores a 100€ em Portugal Continental.</p>
+          </div>
+
+          <div class="value-item">
+            <div class="value-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+            <h4>Trocas Sem Complicação</h4>
+            <p>Até 30 dias para efetuares a troca ou devolução de qualquer peça.</p>
+          </div>
+
+          <div class="value-item">
+            <div class="value-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h4>Conceção em Lisboa</h4>
+            <p>Design de linhas intemporais com acabamento de alta costura artesanal.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       7. PAINEL LATERAL (DRAWER) DO CARRINHO DE COMPRAS
+       ========================================================================= -->
+  <div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+
+  <aside class="side-drawer" id="cart-drawer" role="dialog" aria-labelledby="cart-drawer-title" aria-modal="true">
+    <div class="drawer-header">
+      <h2 class="drawer-title" id="cart-drawer-title">
+        O teu carrinho
+      </h2>
+      <button type="button" class="drawer-close-btn" id="close-cart-btn" aria-label="Fechar carrinho">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Barra de Portes Grátis -->
+    <div class="shipping-progress-box">
+      <div class="shipping-progress-text" id="shipping-progress-text">
+        Adiciona <strong>100,00 €</strong> para portes grátis!
+      </div>
+      <div class="shipping-bar-track">
+        <div class="shipping-bar-fill" id="shipping-bar-fill"></div>
+      </div>
+    </div>
+
+    <!-- Lista de Artigos no Carrinho -->
+    <div class="drawer-content" id="cart-items-list" tabindex="0">
+      <!-- Artigos gerados dinamicamente via script.js -->
+    </div>
+
+    <!-- Resumo de Totais e Checkout -->
+    <div class="drawer-footer">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <strong id="cart-subtotal">0,00 €</strong>
+      </div>
+      <div class="summary-row">
+        <span>Portes de Envio:</span>
+        <span id="cart-shipping">4,90 €</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total:</span>
+        <strong id="cart-total">0,00 €</strong>
+      </div>
+
+      <button type="button" class="checkout-btn" id="cart-checkout-btn">
+        Finalizar Compra
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       8. PAINEL LATERAL (DRAWER) DE FAVORITOS
+       ========================================================================= -->
+  <aside class="side-drawer" id="fav-modal" role="dialog" aria-labelledby="fav-drawer-title" aria-modal="true">
+    <div class="drawer-header">
+      <h2 class="drawer-title" id="fav-drawer-title">
+        Peças Favoritas
+      </h2>
+      <button type="button" class="drawer-close-btn" id="close-fav-btn" aria-label="Fechar favoritos">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="drawer-content" id="fav-items-list" tabindex="0">
+      <!-- Artigos favoritados gerados dinamicamente via script.js -->
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       9. MODAL DE FINALIZAÇÃO DA COMPRA (CHECKOUT DEMONSTRATIVO)
+       ========================================================================= -->
+  <div class="modal-overlay" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="checkout-modal-title">Finalização da Compra</h3>
+        <button type="button" class="modal-close-btn" id="close-checkout-btn" aria-label="Fechar janela">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Aviso Académico Obrigatório -->
+        <div class="academic-notice">
+          <strong>Demonstração Académica:</strong> Esta loja funciona apenas no frontend como projeto de estudo de JavaScript. Nenhum dado bancário é solicitado e não é efetuada nenhuma cobrança real.
+        </div>
+
+        <form class="checkout-form" id="checkout-form" novalidate>
+          <div class="form-group">
+            <label for="checkout-nome">Nome Completo <span>*</span></label>
+            <input type="text" id="checkout-nome" name="nome" class="form-input" placeholder="ex: Maria Silva" required />
+            <span class="field-error-msg" id="error-nome"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="checkout-telefone">Número de Telemóvel <span>*</span></label>
+              <input type="tel" id="checkout-telefone" name="telefone" class="form-input" placeholder="ex: 912 345 678" required />
+              <span class="field-error-msg" id="error-telefone"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="checkout-email">Email (opcional)</label>
+              <input type="email" id="checkout-email" name="email" class="form-input" placeholder="ex: maria@exemplo.pt" />
+              <span class="field-error-msg" id="error-email"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="checkout-morada">Morada de Entrega <span>*</span></label>
+            <textarea id="checkout-morada" name="morada" rows="2" class="form-input" placeholder="Rua, número de porta, andar e código postal" required></textarea>
+            <span class="field-error-msg" id="error-morada"></span>
+          </div>
+
+          <!-- Resumo da Encomenda no Formulário -->
+          <div class="checkout-summary-box">
+            <h5>Resumo da Encomenda</h5>
+            <div class="checkout-items-preview" id="checkout-summary-items"></div>
+            <div id="checkout-total-display"></div>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; padding: 1.1rem;">
+            Confirmar Encomenda
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       10. MODAL DE CONFIRMAÇÃO DA ENCOMENDA
+       ========================================================================= -->
+  <div class="modal-overlay" id="confirmation-modal" role="dialog" aria-modal="true" aria-labelledby="confirmation-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="confirmation-modal-title">Encomenda Registada</h3>
+        <button type="button" class="modal-close-btn" id="close-confirmation-btn" aria-label="Fechar confirmação">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body confirmation-body">
+        <div class="success-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <h3>Obrigado pela tua escolha!</h3>
+        <p style="color: var(--color-text-muted); margin-bottom: 1rem;">
+          A tua encomenda demonstrativa foi gerada com sucesso no frontend.
+        </p>
+
+        <span class="order-number-tag" id="order-number-display">#MBL-00000</span>
+
+        <div class="order-details-card">
+          <div id="order-customer-display" style="margin-bottom: 1rem; font-size: 0.88rem; line-height: 1.6;"></div>
+          <div id="order-summary-display" style="font-size: 0.88rem; line-height: 1.6; border-top: 1px dashed var(--color-border); padding-top: 0.75rem;"></div>
+        </div>
+
+        <button type="button" class="btn-primary" id="continue-shopping-btn" style="width: 100%;">
+          Continuar a Explorar a Mabel Store
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       11. MODAL QUICK VIEW (VER DETALHES RÁPIDOS)
+       ========================================================================= -->
+  <div class="modal-overlay" id="quickview-modal" role="dialog" aria-modal="true" aria-label="Detalhes da Peça">
+    <div class="modal-box" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Detalhes da Peça</h3>
+        <button type="button" class="modal-close-btn" id="close-quickview-btn" aria-label="Fechar detalhes">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="quickview-content">
+        <!-- Preenchido dinamicamente via script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Container de Notificações Toast -->
+  <div class="toast-container" id="toast-container" aria-live="assertive"></div>
+
+  <!-- =========================================================================
+       12. RODAPÉ DA PÁGINA
+       ========================================================================= -->
+  <footer class="site-footer" id="contacto">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Coluna da Marca -->
+        <div class="footer-col footer-brand">
+          <a href="#" class="logo">
+            MABEL STORE
+            <span>LISBOA</span>
+          </a>
+          <p>
+            Boutique de moda contemporânea orientada para a beleza intemporal, linhas minimalistas e alfaiataria responsável.
+          </p>
+          <div class="social-links" aria-label="Redes sociais">
+            <a href="#" class="social-btn" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="Pinterest">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+                <path d="M18 9a6 6 0 1 0-7.5 5.8"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coluna de Navegação -->
+        <div class="footer-col">
+          <h5>Coleções</h5>
+          <ul class="footer-links">
+            <li><a href="#produtos" class="footer-link" onclick="appState.filters.category='Novidades'; renderizarProdutos();">Novidades</a></li>
+            <li><a href="#produtos" class="footer-link" onclick="appState.filters.gender='Mulher'; renderizarProdutos();">Linha Mulher</a></li>
+            <li><a href="#produtos" class="footer-link" onclick="appState.filters.gender='Homem'; renderizarProdutos();">Linha Homem</a></li>
+            <li><a href="#produtos" class="footer-link" onclick="appState.filters.category='Mais vendidos'; renderizarProdutos();">Mais Vendidos</a></li>
+            <li><a href="#produtos" class="footer-link" onclick="limparTodosOsFiltros();">Todas as Peças</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna de Apoio ao Cliente -->
+        <div class="footer-col">
+          <h5>Apoio & Loja</h5>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link" onclick="mostrarToast('Guia de tamanhos: Padrão europeu de corte alfaiataria.'); return false;">Guia de Tamanhos</a></li>
+            <li><a href="#" class="footer-link" onclick="mostrarToast('Envios gratuitos para encomendas superiores a 100€.'); return false;">Envios & Entregas</a></li>
+            <li><a href="#" class="footer-link" onclick="mostrarToast('Devoluções gratuitas até 30 dias após receção.'); return false;">Trocas e Devoluções</a></li>
+            <li><a href="#" class="footer-link" onclick="mostrarToast('Demonstração académica para formação de JavaScript.'); return false;">Aviso Académico</a></li>
+          </ul>
+        </div>
+
+        <!-- Coluna de Contacto -->
+        <div class="footer-col">
+          <h5>Atelier & Contacto</h5>
+          <div class="footer-contact-info">
+            <p>Avenida da Liberdade, 192<br />1250-147 Lisboa, Portugal</p>
+            <p>Telefone: +351 210 000 000</p>
+            <p>Email: atelier@mabelstore.exemplo</p>
+            <p style="font-size: 0.8rem; color: #767067;">Horário: Seg - Sáb, 10h00 às 19h30</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Mabel Store Lisboa. Todos os direitos reservados.</p>
+        <p>Projeto demonstrativo para estudo de JavaScript Vanilla (HTML5, CSS3, JS).</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Principal da Aplicação -->
+  <script src="js/script.js"></script>
+</body>
+</html>
